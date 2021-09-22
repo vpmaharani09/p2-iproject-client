@@ -4,20 +4,25 @@
       <div class="avatar">
         <div class="w-12 h-12 mask mask-squircle">
           <img
-            src="/tailwind-css-component-profile-2@56w.png"
+            :src="
+              `https://avatars.dicebear.com/api/croodles/${user.username}.svg`
+            "
             alt="Avatar Tailwind CSS Component"
           />
         </div>
       </div>
       <div data-theme="wireframe">
-        <h1 class="text-4xl semibold text-left">vpmaharani09</h1>
+        <h1 class="text-5xl semibold text-left">{{ user.username }}</h1>
       </div>
     </div>
     <div data-theme="wireframe">
       <hr class="m-10" style="margin-right: 50px" />
     </div>
     <div data-theme="luxury" class="m-10 mx-60">
-      <button class="btn btn-outline btn-accent btn-wide w-full">
+      <button
+        @click.prevent="createForm(user.id)"
+        class="btn btn-outline btn-accent btn-wide w-full"
+      >
         <span class="items-center flex justify-start" style="float: left">
           <span class="mx-5">
             <i class="fas fa-plus-square"></i>
@@ -30,7 +35,7 @@
       <table class="table w-full">
         <thead></thead>
         <tbody>
-          <tr>
+          <tr v-for="todo in todos" :key="todo.id">
             <th>
               <label>
                 <input type="checkbox" class="checkbox" />
@@ -40,17 +45,20 @@
               <div class="flex items-center space-x-3">
                 <div>
                   <div class="font-bold">
-                    Hart Hagerty
+                    {{ todo.task }}
                   </div>
                   <div class="text-sm opacity-50">
-                    United States
+                    {{ todo.description }}
                   </div>
                 </div>
               </div>
             </td>
             <td>
-              <span class="badge badge-outline badge-md"
-                >Desktop Support Technician</span
+              <span
+                v-for="tag in todo.tag"
+                :key="tag"
+                class="badge badge-outline badge-md mx-2"
+                >{{ tag }}</span
               >
             </td>
             <td>
@@ -58,93 +66,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span>
-                Purple
+                {{ todo.deadline }}
               </span>
             </td>
             <th>
-              <button class="btn btn-ghost btn-xs">delete</button>
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <label>
-                <input type="checkbox" class="checkbox" />
-              </label>
-            </th>
-            <td>
-              <div class="flex items-center space-x-3">
-                <div>
-                  <div class="font-bold">
-                    Brice Swyre
-                  </div>
-                  <div class="text-sm opacity-50">
-                    China
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <span class="badge badge-outline badge-md">Tax Accountant</span>
-            </td>
-            <td>Red</td>
-            <th>
-              <button class="btn btn-ghost btn-xs">details</button>
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <label>
-                <input type="checkbox" class="checkbox" />
-              </label>
-            </th>
-            <td>
-              <div class="flex items-center space-x-3">
-                <div>
-                  <div class="font-bold">
-                    Marjy Ferencz
-                  </div>
-                  <div class="text-sm opacity-50">
-                    Russia
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <span class="badge badge-outline badge-md"
-                >Office Assistant I</span
+              <button
+                class="btn btn-ghost btn-xs"
+                @click.prevent="deleteTask(todo.id)"
               >
-            </td>
-            <td>Crimson</td>
-            <th>
-              <button class="btn btn-ghost btn-xs">details</button>
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <label>
-                <input type="checkbox" class="checkbox" />
-              </label>
-            </th>
-            <td>
-              <div class="flex items-center space-x-3">
-                <div>
-                  <div class="font-bold">
-                    Yancy Tear
-                  </div>
-                  <div class="text-sm opacity-50">
-                    Brazil
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <span class="badge badge-outline badge-md"
-                >Community Outreach Specialist</span
-              >
-            </td>
-            <td>Indigo</td>
-            <th>
-              <button class="btn btn-ghost btn-xs">details</button>
+                delete
+              </button>
             </th>
           </tr>
         </tbody>
@@ -163,8 +94,37 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
   name: "TableTodos",
+  computed: {
+    ...mapState(["todos", "user"]),
+    id() {
+      return this.$route.params.id;
+    },
+  },
+  methods: {
+    ...mapActions(["fetchTodos", "fetchUserId", "deleteTaskActions"]),
+    async createForm(id) {
+      this.$router.push({ name: "AddForm", params: { id: id } });
+    },
+    async deleteTask(id) {
+      await this.deleteTaskActions(id);
+      await this.fetchTodos(this.id);
+      // this.$router.push({ name: "Todos" });
+    },
+  },
+  async created() {
+    const payload = this.id;
+    try {
+      if (payload) {
+        await this.fetchTodos(payload);
+        await this.fetchUserId(payload);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
 </script>
 

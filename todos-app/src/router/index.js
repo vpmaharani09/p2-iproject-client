@@ -41,17 +41,17 @@ const routes = [
     component: Register,
   },
   {
+    path: "/complete",
+    name: "Completed",
+    component: Completed,
+  },
+  {
     path: "/todos/:id",
     name: "Todos",
     component: Todos,
   },
   {
-    path: "/todos/complete/:id",
-    name: "Completed",
-    component: Completed,
-  },
-  {
-    path: "/form",
+    path: "/form/:id",
     name: "AddForm",
     component: AddForm,
   },
