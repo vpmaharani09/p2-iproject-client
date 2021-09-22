@@ -11,6 +11,7 @@ export default new Vuex.Store({
     isLoggedIn: false,
     users: [],
     todos: [],
+    todosComplete: [],
     user: {},
     message: "",
   },
@@ -29,6 +30,9 @@ export default new Vuex.Store({
     },
     GET_TODOS(state, payload) {
       state.todos = payload;
+    },
+    GET_TODOS_COMPLETE(state, payload) {
+      state.todosComplete = payload;
     },
     GET_MESSAGES(state, payload) {
       state.message = payload;
@@ -73,9 +77,8 @@ export default new Vuex.Store({
           method: "GET",
           url: "/users",
         });
-        if (response) {
-          commit("GET_USERS", response.data);
-        }
+
+        commit("GET_USERS", response.data);
       } catch (err) {
         console.log(err);
       }
@@ -97,15 +100,30 @@ export default new Vuex.Store({
       }
     },
 
+    async fetchTodosComplete({ commit }) {
+      try {
+        const response = await instance({
+          method: "GET",
+          url: `/complete`,
+          headers: {
+            access_token: localStorage.getItem("access_token"),
+          },
+        });
+
+        commit("GET_TODOS_COMPLETE", response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
     async fetchUserId({ commit }, payload) {
       try {
         const response = await instance({
           method: "GET",
           url: `users/${payload}`,
         });
-        if (response) {
-          commit("GET_USER", response.data);
-        }
+
+        commit("GET_USER", response.data);
       } catch (err) {
         console.log(err);
       }
@@ -132,6 +150,35 @@ export default new Vuex.Store({
         Swal.fire({
           icon: "success",
           title: `${response.data.message}`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      } catch (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data,
+        });
+      }
+    },
+
+    async completedActions({ dispatch }, payload) {
+      try {
+        const { isComplete } = payload;
+        const response = await instance({
+          method: "PATCH",
+          url: `/todos/${payload.id}`,
+          headers: {
+            access_token: localStorage.getItem("access_token"),
+          },
+          data: {
+            isComplete,
+          },
+        });
+        await dispatch("fetchTodosComplete");
+        Swal.fire({
+          icon: "success",
+          title: `${response.data.msg}`,
           showConfirmButton: false,
           timer: 2000,
         });
