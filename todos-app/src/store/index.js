@@ -14,6 +14,7 @@ export default new Vuex.Store({
     todosComplete: [],
     user: {},
     message: "",
+    weather: {},
   },
   mutations: {
     CHANGES_CURRENTPAGE(state, payload) {
@@ -37,8 +38,27 @@ export default new Vuex.Store({
     GET_MESSAGES(state, payload) {
       state.message = payload;
     },
+    GET_WEATHER(state, payload) {
+      state.weather = payload;
+    },
   },
   actions: {
+    async getWeather({ commit }) {
+      try {
+        const response = await instance({
+          method: "GET",
+          url: "/weather",
+          headers: {
+            access_token: localStorage.getItem("access_token"),
+          },
+        });
+
+        commit("GET_WEATHER", response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
     async registerActions({ commit }, payload) {
       try {
         const { username, birthDate, city, email, password } = payload;
@@ -162,12 +182,13 @@ export default new Vuex.Store({
       }
     },
 
-    async completedActions({ dispatch }, payload) {
+    async completedActions({ commit }, payload) {
       try {
-        const { isComplete } = payload;
+        // console.log(payload);
+        const { id, isComplete } = payload;
         const response = await instance({
           method: "PATCH",
-          url: `/todos/${payload.id}`,
+          url: `/todos/${id}`,
           headers: {
             access_token: localStorage.getItem("access_token"),
           },
@@ -175,7 +196,8 @@ export default new Vuex.Store({
             isComplete,
           },
         });
-        await dispatch("fetchTodosComplete");
+        // await dispatch("fetchTodosComplete");
+        commit("GET_MESSAGES", response.data.msg);
         Swal.fire({
           icon: "success",
           title: `${response.data.msg}`,
