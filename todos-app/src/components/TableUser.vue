@@ -1,172 +1,73 @@
 <template>
   <div>
-    <div class="mt-5 ml-20">
-      <h1 class="md:font-mono text-6xl semibold text-left">Welcome hackers!</h1>
-    </div>
-    <div class="overflow-x-auto p-10 px-40">
-      <table class="table w-full">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Birth Date</th>
-            <th>City</th>
-            <th>Todos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div class="flex items-center space-x-3">
-                <div class="avatar">
-                  <div class="w-12 h-12 mask mask-squircle">
-                    <img
-                      src="/tailwind-css-component-profile-2@56w.png"
-                      alt="Avatar Tailwind CSS Component"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div class="font-bold">
-                    Hart Hagerty
-                  </div>
-                  <div class="text-sm opacity-50">
-                    United States
-                  </div>
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Birth Date</th>
+          <th>City</th>
+          <th>Todos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="user in users" :key="user.id">
+          <td>
+            <div class="flex items-center space-x-3">
+              <div class="avatar">
+                <div class="w-12 h-12 mask mask-squircle">
+                  <img
+                    :src="
+                      `https://avatars.dicebear.com/api/croodles/${user.username}.svg`
+                    "
+                    alt="Avatar Tailwind CSS Component"
+                  />
                 </div>
               </div>
-            </td>
-            <td>
-              Zemlak, Daniel and Leannon
-
-              <br />
-              <span class="badge badge-outline badge-sm"
-                >Desktop Support Technician</span
-              >
-            </td>
-            <td>Purple</td>
-            <th>
-              <router-link :to="{ name: 'Todos', params: { id: 1 } }">
-                <button class="btn btn-ghost btn-xs">details</button>
-              </router-link>
-            </th>
-          </tr>
-          <tr>
-            <td>
-              <div class="flex items-center space-x-3">
-                <div class="avatar">
-                  <div class="w-12 h-12 mask mask-squircle">
-                    <img
-                      src="/tailwind-css-component-profile-3@56w.png"
-                      alt="Avatar Tailwind CSS Component"
-                    />
-                  </div>
+              <div>
+                <div class="font-bold">
+                  {{ user.username }}
                 </div>
-                <div>
-                  <div class="font-bold">
-                    Brice Swyre
-                  </div>
-                  <div class="text-sm opacity-50">
-                    China
-                  </div>
+                <div class="text-sm opacity-50">
+                  {{ user.email }}
                 </div>
               </div>
-            </td>
-            <td>
-              Carroll Group
-
-              <br />
-              <span class="badge badge-outline badge-sm">Tax Accountant</span>
-            </td>
-            <td>Red</td>
-            <th>
-              <button class="btn btn-ghost btn-xs">details</button>
-            </th>
-          </tr>
-          <tr>
-            <td>
-              <div class="flex items-center space-x-3">
-                <div class="avatar">
-                  <div class="w-12 h-12 mask mask-squircle">
-                    <img
-                      src="/tailwind-css-component-profile-4@56w.png"
-                      alt="Avatar Tailwind CSS Component"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div class="font-bold">
-                    Marjy Ferencz
-                  </div>
-                  <div class="text-sm opacity-50">
-                    Russia
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td>
-              Rowe-Schoen
-
-              <br />
-              <span class="badge badge-outline badge-sm"
-                >Office Assistant I</span
-              >
-            </td>
-            <td>Crimson</td>
-            <th>
-              <button class="btn btn-ghost btn-xs">details</button>
-            </th>
-          </tr>
-          <tr>
-            <td>
-              <div class="flex items-center space-x-3">
-                <div class="avatar">
-                  <div class="w-12 h-12 mask mask-squircle">
-                    <img
-                      src="/tailwind-css-component-profile-5@56w.png"
-                      alt="Avatar Tailwind CSS Component"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div class="font-bold">
-                    Yancy Tear
-                  </div>
-                  <div class="text-sm opacity-50">
-                    Brazil
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td>
-              Wyman-Ledner
-
-              <br />
-              <span class="badge badge-outline badge-sm"
-                >Community Outreach Specialist</span
-              >
-            </td>
-            <td>Indigo</td>
-            <th>
-              <button class="btn btn-ghost btn-xs">details</button>
-            </th>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Name</th>
-            <th>Job</th>
-            <th>Favorite Color</th>
-            <th></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
+            </div>
+          </td>
+          <td>
+            {{ user.birthDate }}
+          </td>
+          <td>{{ user.city }}</td>
+          <th>
+            <button
+              @click.prevent="todosPage(user.id)"
+              class="btn btn-ghost btn-xs"
+            >
+              details
+            </button>
+          </th>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Name</th>
+          <th>Birth Date</th>
+          <th>City</th>
+          <th>Todos</th>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 </template>
 
 <script>
 export default {
   name: "TableUser",
+  props: ["users"],
+  methods: {
+    async todosPage(id) {
+      this.$router.push({ name: "Todos", params: { id: id } });
+    },
+  },
 };
 </script>
 

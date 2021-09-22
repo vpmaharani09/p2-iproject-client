@@ -46,12 +46,12 @@ const routes = [
     component: Todos,
   },
   {
-    path: "/todos/complete/:id",
+    path: "/todos/complete",
     name: "Completed",
     component: Completed,
   },
   {
-    path: "/form",
+    path: "/form/:id",
     name: "AddForm",
     component: AddForm,
   },
