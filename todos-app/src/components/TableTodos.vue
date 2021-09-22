@@ -37,9 +37,15 @@
         <tbody>
           <tr v-for="todo in todos" :key="todo.id">
             <th>
-              <label>
-                <input type="checkbox" class="checkbox" />
-              </label>
+              <div class="form-control">
+                <label class="cursor-pointer label">
+                  <input
+                    type="checkbox"
+                    class="checkbox checkbox-secondary"
+                    @change="changeIsComplete(todo.id, $event)"
+                  />
+                </label>
+              </div>
             </th>
             <td>
               <div class="flex items-center space-x-3">
@@ -97,6 +103,11 @@
 import { mapActions, mapState } from "vuex";
 export default {
   name: "TableTodos",
+  data() {
+    return {
+      // isComplete: false,
+    };
+  },
   computed: {
     ...mapState(["todos", "user"]),
     id() {
@@ -104,7 +115,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["fetchTodos", "fetchUserId", "deleteTaskActions"]),
+    ...mapActions([
+      "fetchTodos",
+      "fetchUserId",
+      "deleteTaskActions",
+      "completedActions",
+    ]),
     async createForm(id) {
       this.$router.push({ name: "AddForm", params: { id: id } });
     },
@@ -112,6 +128,16 @@ export default {
       await this.deleteTaskActions(id);
       await this.fetchTodos(this.id);
       // this.$router.push({ name: "Todos" });
+    },
+    async changeIsComplete(id, e) {
+      const isComplete = e.target.checked;
+      const data = {
+        id,
+        isComplete,
+      };
+      // console.log(data);
+      await this.completedActions(data);
+      await this.fetchTodos(this.id);
     },
   },
   async created() {

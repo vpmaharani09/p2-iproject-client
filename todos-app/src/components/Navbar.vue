@@ -16,9 +16,6 @@
       >
         <div class="flex items-stretch justify-center mr-60">
           <a class="btn btn-ghost btn-sm rounded-btn" style="color: white">
-            Weathers
-          </a>
-          <a class="btn btn-ghost btn-sm rounded-btn" style="color: white">
             Room Server
           </a>
           <router-link :to="{ name: 'Completed' }">

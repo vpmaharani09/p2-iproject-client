@@ -17,8 +17,7 @@
             type="checkbox"
             checked="checked"
             class="checkbox checkbox-primary"
-            v-model="isComplete"
-            @change="completeStatus(todo.id, isComplete)"
+            @change="changeIsComplete(todo.id, $event)"
           />
         </label>
       </div>
@@ -31,19 +30,19 @@ import { mapActions } from "vuex";
 export default {
   name: "TableComplete",
   data() {
-    return {
-      isComplete: true,
-    };
+    return {};
   },
   props: ["todosComplete"],
   methods: {
-    ...mapActions(["completedActions"]),
-    async completeStatus(id, isComplete) {
-      const payload = {
+    ...mapActions(["completedActions", "fetchTodosComplete"]),
+    async changeIsComplete(id, e) {
+      const isComplete = e.target.checked;
+      const data = {
         id,
         isComplete,
       };
-      await this.completedActions(payload);
+      await this.completedActions(data);
+      await this.fetchTodosComplete();
     },
   },
 };
