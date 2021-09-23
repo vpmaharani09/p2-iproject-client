@@ -129,7 +129,11 @@ export default new Vuex.Store({
         });
         commit("CHANGES_CURRENTPAGE", "login");
       } catch (err) {
-        console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.msg,
+        });
       }
     },
 
@@ -144,8 +148,13 @@ export default new Vuex.Store({
         localStorage.setItem("access_token", data.access_token);
         commit("CHANGES_ISLOGGEDIN", true);
         await dispatch("fetchUsers");
+        await dispatch("getWeather");
       } catch (err) {
-        console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.msg,
+        });
       }
     },
 

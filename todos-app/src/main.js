@@ -8,7 +8,7 @@ import "./assets/tailwind.css";
 Vue.use(
   new VueSocketIO({
     debug: true,
-    connection: "http://localhost:3000", //options object is Optional
+    connection: "https://rani-todos-app.herokuapp.com", //options object is Optional
   })
 );
 
