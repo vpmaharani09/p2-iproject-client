@@ -15,7 +15,7 @@
               through the community also no need to worry about doing activities
               indoors or outdoors!
             </div>
-            <router-link :to="{ name: 'Home' }">
+            <router-link :to="{ name: 'Register' }">
               <button
                 class="flex col btn btn-primary uppercase mt-10 text-sm font-semibold hover:underline"
               >

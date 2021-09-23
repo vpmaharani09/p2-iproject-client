@@ -7,6 +7,8 @@ import Register from "../views/Register.vue";
 import Todos from "../views/Todos.vue";
 import Completed from "../views/Completed.vue";
 import AddForm from "../views/AddForm.vue";
+import ChatCord from "../views/ChatCord.vue";
+import FormServer from "../views/FormServer.vue";
 
 Vue.use(VueRouter);
 
@@ -55,12 +57,36 @@ const routes = [
     name: "AddForm",
     component: AddForm,
   },
+  {
+    path: "/chat",
+    name: "ChatCord",
+    component: ChatCord,
+  },
+  {
+    path: "/server",
+    name: "FormServer",
+    component: FormServer,
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name === "Home" && !localStorage.getItem("access_token")) {
+    next({ name: "Login" });
+  } else if (to.name === "Login" || to.name === "Register") {
+    if (localStorage.getItem("access_token")) {
+      next({ name: "Home" });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

@@ -17,7 +17,7 @@
                 <div class="w-12 h-12 mask mask-squircle">
                   <img
                     :src="
-                      `https://avatars.dicebear.com/api/croodles/${user.username}.svg`
+                      `https://avatars.dicebear.com/api/avataaars/${user.username}.svg`
                     "
                     alt="Avatar Tailwind CSS Component"
                   />

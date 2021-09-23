@@ -83,15 +83,13 @@ export default {
   },
   methods: {
     ...mapMutations(["CHANGES_ISLOGGEDIN"]),
-    ...mapActions(["fetchUsers", "getWeather"]),
+    ...mapActions(["fetchUsers", "getWeather", "isLoading"]),
   },
   async created() {
     if (localStorage.getItem("access_token")) {
       this.CHANGES_ISLOGGEDIN(true);
       await this.fetchUsers();
       await this.getWeather();
-    } else {
-      await this.fetchUsers();
     }
   },
 };
