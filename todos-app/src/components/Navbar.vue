@@ -15,7 +15,7 @@
         v-if="isLoggedIn === true"
       >
         <div class="flex items-stretch justify-center mr-60">
-          <router-link :to="{ name: 'FormServer' }">
+          <router-link :to="{ name: 'FormChat' }">
             <a class="btn btn-ghost btn-sm rounded-btn" style="color: white">
               Room Server
             </a>

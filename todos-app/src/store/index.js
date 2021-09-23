@@ -17,8 +17,8 @@ export default new Vuex.Store({
     show: "",
     weather: {},
     messages: [],
-    userCommunity: {},
-    userJoin: [],
+    communities: [],
+    userJoin: {},
   },
   mutations: {
     CHANGES_CURRENTPAGE(state, payload) {
@@ -51,11 +51,11 @@ export default new Vuex.Store({
     PUSH_MESSAGE(state, payload) {
       state.messages.push(payload);
     },
-    PUSH_USER(state, payload) {
-      state.userJoin = payload;
+    GET_COMMUNITY(state, payload) {
+      state.communities = payload;
     },
-    GET_USER_COM(state, payload) {
-      state.userCommunity = payload;
+    GET_USERJOIN(state, payload) {
+      state.userJoin = payload;
     },
   },
   actions: {
@@ -75,43 +75,17 @@ export default new Vuex.Store({
       }
     },
 
-    // async getUserJoin({ commit }, payload) {
-    //   // console.log(payload);
-    //   try {
-    //     const response = await instance({
-    //       method: "GET",
-    //       url: "/community",
-    //       data: {
-    //         payload,
-    //       },
-    //       headers: {
-    //         access_token: localStorage.getItem("access_token"),
-    //       },
-    //     });
-
-    //     commit("PUSH_USER", response.data);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // },
-
-    async getUserCommunity({ commit }, payload) {
+    async getCommunity({ commit }) {
       try {
-        const { username, name } = payload;
         const response = await instance({
-          method: "POST",
+          method: "GET",
           url: "/community",
           headers: {
             access_token: localStorage.getItem("access_token"),
           },
-          data: {
-            username,
-            name,
-          },
         });
 
-        commit("GET_USER_COM", response.data);
-        // commit("PUSH USER", response.data);
+        commit("GET_COMMUNITY", response.data);
       } catch (err) {
         console.log(err);
       }
