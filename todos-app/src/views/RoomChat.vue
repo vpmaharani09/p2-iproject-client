@@ -273,7 +273,7 @@ export default {
     },
 
     roomUsers(data) {
-      console.log(data);
+      //   console.log(data);
       //   console.log("aaah");
       this.GET_USERJOIN(data);
     },
@@ -291,9 +291,9 @@ export default {
     },
 
     disconnecting() {
-      console.log("hahhaha");
-      //   this.$router.push({ name: "FormChat" });
+      //   console.log("hahhaha");
       this.$socket.emit("disconnecting");
+      this.$router.push({ name: "FormChat" });
     },
   },
   async created() {
