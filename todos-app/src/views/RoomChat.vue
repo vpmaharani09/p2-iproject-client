@@ -266,39 +266,25 @@ export default {
   },
   sockets: {
     message(data) {
-      //   console.log("kwfjw");
-      //   console.log(data);
       this.PUSH_MESSAGE(data);
       this.inputMsg = "";
     },
 
     roomUsers(data) {
-      //   console.log(data);
-      //   console.log("aaah");
       this.GET_USERJOIN(data);
     },
-
-    // broadcastMessage(data) {
-    //   console.log(data);
-    // },
   },
   methods: {
     ...mapMutations(["PUSH_MESSAGE", "GET_USERJOIN"]),
     async sendMessage() {
-      //   console.log("masuk ga");
       const data = this.inputMsg;
       this.$socket.emit("sendMessage", data);
     },
 
     disconnecting() {
-      //   console.log("hahhaha");
       this.$socket.emit("disconnecting");
       this.$router.push({ name: "FormChat" });
     },
-  },
-  async created() {
-    // await this.getMessage();
-    // await this.$socket.emit("broadcast");
   },
 };
 </script>
