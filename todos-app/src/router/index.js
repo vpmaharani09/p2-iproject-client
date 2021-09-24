@@ -7,8 +7,8 @@ import Register from "../views/Register.vue";
 import Todos from "../views/Todos.vue";
 import Completed from "../views/Completed.vue";
 import AddForm from "../views/AddForm.vue";
-import ChatCord from "../views/ChatCord.vue";
-import FormServer from "../views/FormServer.vue";
+import FormChat from "../views/FormChat.vue";
+import RoomChat from "../views/RoomChat.vue";
 
 Vue.use(VueRouter);
 
@@ -58,15 +58,20 @@ const routes = [
     component: AddForm,
   },
   {
-    path: "/chat",
-    name: "ChatCord",
-    component: ChatCord,
+    path: "/join",
+    name: "FormChat",
+    component: FormChat,
   },
   {
-    path: "/server",
-    name: "FormServer",
-    component: FormServer,
+    path: "/chat",
+    name: "RoomChat",
+    component: RoomChat,
   },
+  // {
+  //   path: "/chat",
+  //   name: "ChatCord",
+  //   component: ChatCord,
+  // },
 ];
 
 const router = new VueRouter({
