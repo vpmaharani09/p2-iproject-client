@@ -98,7 +98,8 @@
           </div>
           <div class="relative" data-theme="pastel">
             <button
-              @submit.prevent="disconnect"
+              @click.prevent="disconnecting"
+              type="submit"
               class="flex col btn btn-primary uppercase text-sm font-semibold hover:underline"
             >
               Leave
@@ -272,7 +273,8 @@ export default {
     },
 
     roomUsers(data) {
-      //   console.log(data);
+      console.log(data);
+      //   console.log("aaah");
       this.GET_USERJOIN(data);
     },
 
@@ -288,9 +290,10 @@ export default {
       this.$socket.emit("sendMessage", data);
     },
 
-    async disconnect() {
-      this.$router.push({ name: "FormChat" });
-      this.$socket.emit("disconnect");
+    disconnecting() {
+      console.log("hahhaha");
+      //   this.$router.push({ name: "FormChat" });
+      this.$socket.emit("disconnecting");
     },
   },
   async created() {
